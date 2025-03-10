@@ -1,0 +1,13 @@
+{
+  "name": "print",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/thev1nn/print.git",
+  "author": "Haowei Goh <43960083+ghaowei08@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
