@@ -69,6 +69,8 @@
 
     <button id="print-button" class="btn btn-success mt-4 d-none" onclick="printLabels()">Print Labels</button>
 
+    <div id="labels-container"></div>
+
     <div class="modal fade" id="itemModel" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -115,6 +117,7 @@
       axios.get('/api/products')
         .then(response => {
           const products = response.data;
+          updateItemCodeOptions(products);
           const productList = document.getElementById('product-list-ul');
           productList.innerHTML = '';
           products.forEach(product => {
@@ -134,7 +137,6 @@
     // Add a new product
     function addProduct() {
       const code = prompt('Enter Product Code:');
-      console.log(code)
       const name = prompt('Enter Product Name:');
       console.log(name)
       if (code && name) {
@@ -162,6 +164,22 @@
       }
     }
 
+    function updateItemCodeOptions(products) {
+      const itemCodeSelect = document.getElementById('itemCode');
+      itemCodeSelect.innerHTML = `<option value="" disabled selected>------ Select a code ------</option>`; // Reset options
+
+      // Add each product to the dropdown
+      products.forEach(product => {
+        const option = document.createElement('option');
+        option.value = product.code;
+        option.setAttribute('data-name', product.name);
+        option.textContent = `${product.code}`;
+        itemCodeSelect.appendChild(option);
+      });
+
+      // Reinitialize Select2 (if needed)
+      $('#itemCode').select2();
+    }
 
     function generateLabels() {
       const supplier = document.getElementById('supplier').value;

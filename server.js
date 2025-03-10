@@ -21,7 +21,6 @@ app.get("/api/products", (req, res) => {
 
 // Add a product
 app.post("/api/products", (req, res) => {
-  console.log(req.body);
   const newProduct = req.body;
   products.push(newProduct);
   fs.writeFileSync("products.json", JSON.stringify(products));
