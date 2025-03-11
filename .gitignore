@@ -60,3 +60,4 @@ firebaseKey-dev.json
 
 uploads-secure/
 public/invoices/*
+*.json
