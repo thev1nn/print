@@ -40,7 +40,7 @@
     <div id="form-section" class="card p-4 shadow-sm">
       <div class="row justify-content-between mb-4 align-items-center">
         <h2 class="col text-left">Label Information</h2>
-        <button type="button" class="col-auto btn btn-light" id="itemButton">
+        <button type="button" class="col-auto btn btn-light" id="productButton">
           Product
         </button>
       </div>
@@ -51,12 +51,12 @@
         </div>
 
         <div class="mb-3">
-          <label for="itemCode" class="form-label">Item Code:</label>
-          <select id="itemCode" class="form-select select2" required onchange="updateSelectedName()">
+          <label for="productCode" class="form-label">Item Code:</label>
+          <select id="productCode" class="form-select select2" required onchange="updateSelectedProduct()">
             <option value="" disabled selected>------ Select a code ------</option>
           </select>
         </div>
-        <div id="sku-name" class="text-muted mb-3"></div>
+        <div id="product-name" class="text-muted mb-3"></div>
 
         <div class="mb-3">
           <label for="quantity" class="form-label">Quantity: </label>
@@ -96,20 +96,20 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       fetchProducts();
-      $('#itemCode').select2();
+      $('#productCode').select2();
     });
-    document.getElementById('itemButton').addEventListener('click', function () {
+    document.getElementById('productButton').addEventListener('click', function () {
       var myModal = new bootstrap.Modal(document.getElementById('itemModel'), {
         keyboard: false
       });
       myModal.show();
     });
-    // Generate labels based on form input
-    function updateSelectedName() {
-      const itemCodeSelect = document.getElementById('itemCode');
-      const selectedOption = itemCodeSelect.options[itemCodeSelect.selectedIndex];
-      const skuName = selectedOption.getAttribute('data-name');
-      document.getElementById('sku-name').innerText = skuName ? `Selected Name: ${skuName}` : '';
+
+    function updateSelectedProduct() {
+      const productCodeSelect = document.getElementById('productCode');
+      const selectedOption = productCodeSelect.options[productCodeSelect.selectedIndex];
+      const productName = selectedOption.getAttribute('data-name');
+      document.getElementById('product-name').innerText = productName ? `Selected Name: ${productName}` : '';
     }
 
     // Fetch and display products
@@ -165,8 +165,8 @@
     }
 
     function updateItemCodeOptions(products) {
-      const itemCodeSelect = document.getElementById('itemCode');
-      itemCodeSelect.innerHTML = `<option value="" disabled selected>------ Select a code ------</option>`; // Reset options
+      const productCodeSelect = document.getElementById('productCode');
+      productCodeSelect.innerHTML = `<option value="" disabled selected>------ Select a code ------</option>`; // Reset options
 
       // Add each product to the dropdown
       products.forEach(product => {
@@ -174,21 +174,21 @@
         option.value = product.code;
         option.setAttribute('data-name', product.name);
         option.textContent = `${product.code}`;
-        itemCodeSelect.appendChild(option);
+        productCodeSelect.appendChild(option);
       });
 
       // Reinitialize Select2 (if needed)
-      $('#itemCode').select2();
+      $('#productCode').select2();
     }
 
     function generateLabels() {
       const supplier = document.getElementById('supplier').value;
-      const itemCode = document.getElementById('itemCode').value;
+      const productCode = document.getElementById('productCode').value;
       const quantity = parseInt(document.getElementById('quantity').value);
       const labelsContainer = document.getElementById('labels-container');
       labelsContainer.innerHTML = ''; // Clear previous labels
 
-      if (!supplier || !itemCode || !quantity) {
+      if (!supplier || !productCode || !quantity) {
         alert('Please fill out the form completely!');
         return;
       }
@@ -198,7 +198,7 @@
         label.className = 'label';
         label.innerHTML = `
         <h3>${supplier}</h3>
-        <p>${itemCode}</p>
+        <p>${productCode}</p>
         <p>${i}/${quantity}</p>
       `;
         labelsContainer.appendChild(label);
@@ -209,7 +209,7 @@
       label.className = 'label';
       label.innerHTML = `
         <h3>${supplier}</h3>
-        <p>${itemCode}</p>
+        <p>${productCode}</p>
         <p>Total ${quantity} box</p>
       `;
       labelsContainer.appendChild(label);
@@ -223,8 +223,8 @@
         preview: true,
         style: `
         .label {
-          width: 65mm;
-          height: 25mm;
+          width: 40mm;
+          height: 30mm;
           border: 1px solid black;
           padding: 2mm;
           box-sizing: border-box;
